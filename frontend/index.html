@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Фабрика Решений — Платформа геймификации</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;900&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/main.css" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="container header__inner">
+      <a href="/" class="logo">
+        <span class="logo__fr">ФР</span>
+        <span class="logo__text">Фабрика Решений</span>
+      </a>
+      <nav class="nav" id="nav">
+        <a href="#mechanics" class="nav__link">Механика</a>
+        <a href="#levels" class="nav__link">Уровни</a>
+        <a href="#rewards" class="nav__link">Награды</a>
+      </nav>
+      <a href="pages/login.html" class="btn btn--primary">Войти</a>
+      <button class="burger" id="burger" aria-label="Меню">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MOBILE NAV -->
+  <div class="mobile-nav" id="mobileNav">
+    <a href="#mechanics" class="mobile-nav__link">Механика</a>
+    <a href="#levels" class="mobile-nav__link">Уровни</a>
+    <a href="#rewards" class="mobile-nav__link">Награды</a>
+    <a href="pages/login.html" class="btn btn--primary mobile-nav__btn">Войти</a>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero__bg">
+      <div class="hero__orb hero__orb--purple"></div>
+      <div class="hero__orb hero__orb--cyan"></div>
+      <div class="hero__orb hero__orb--mint"></div>
+      <div class="hero__grid"></div>
+    </div>
+    <div class="container hero__inner">
+      <div class="hero__badge">🚀 Платформа геймификации</div>
+      <h1 class="hero__title">
+        Выполняй<br/>
+        <span class="gradient-text">челленджи</span><br/>
+        — получай призы
+      </h1>
+      <p class="hero__desc">
+        Платформа для команд, где за реальные достижения начисляются баллы, которые обмениваются на призы.
+      </p>
+      <div class="hero__actions">
+        <a href="pages/login.html" class="btn btn--primary btn--lg">Начать</a>
+        <a href="#mechanics" class="btn btn--ghost btn--lg">Как это работает</a>
+      </div>
+      <div class="hero__stats">
+        <div class="hero__stat">
+          <span class="hero__stat-num">3</span>
+          <span class="hero__stat-label">Уровня сложности</span>
+        </div>
+        <div class="hero__stat-divider"></div>
+        <div class="hero__stat">
+          <span class="hero__stat-num">∞</span>
+          <span class="hero__stat-label">Команд</span>
+        </div>
+        <div class="hero__stat-divider"></div>
+        <div class="hero__stat">
+          <span class="hero__stat-num">🏆</span>
+          <span class="hero__stat-label">Реальные призы</span>
+        </div>
+      </div>
+    </div>
+    <!-- Pixel 3D decoration -->
+    <div class="pixel-art" aria-hidden="true">
+      <div class="pixel p1"></div>
+      <div class="pixel p2"></div>
+      <div class="pixel p3"></div>
+      <div class="pixel p4"></div>
+      <div class="pixel p5"></div>
+    </div>
+  </section>
+
+  <!-- MECHANICS -->
+  <section class="section" id="mechanics">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Как это работает</div>
+        <h2 class="section-title">Механика платформы</h2>
+      </div>
+      <div class="mechanics-grid">
+        <div class="mechanic-card" data-step="01">
+          <div class="mechanic-card__icon">👥</div>
+          <h3 class="mechanic-card__title">Команда создана</h3>
+          <p class="mechanic-card__text">Проектный менеджер регистрируется, создаёт команду и добавляет участников.</p>
+        </div>
+        <div class="mechanic-card" data-step="02">
+          <div class="mechanic-card__icon">🎯</div>
+          <h3 class="mechanic-card__title">Челленджи запущены</h3>
+          <p class="mechanic-card__text">ПМ создаёт задачи трёх уровней сложности и ежедневные дейли для команды.</p>
+        </div>
+        <div class="mechanic-card" data-step="03">
+          <div class="mechanic-card__icon">⚡</div>
+          <h3 class="mechanic-card__title">Баллы начислены</h3>
+          <p class="mechanic-card__text">Участники выполняют задания — баллы начисляются автоматически.</p>
+        </div>
+        <div class="mechanic-card" data-step="04">
+          <div class="mechanic-card__icon">🎁</div>
+          <h3 class="mechanic-card__title">Призы получены</h3>
+          <p class="mechanic-card__text">Накопленные баллы обмениваются на реальные подарки из каталога наград.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LEVELS -->
+  <section class="section section--dark" id="levels">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Сложность</div>
+        <h2 class="section-title">Три уровня челленджей</h2>
+      </div>
+      <div class="levels-grid">
+        <div class="level-card level-card--light">
+          <div class="level-card__badge">LIGHT</div>
+          <div class="level-card__points">+10 pts</div>
+          <h3 class="level-card__title">Помог команде</h3>
+          <p class="level-card__desc">Помог другому участнику закрыть задачу. Командная работа в приоритете.</p>
+          <div class="level-card__example">
+            <span class="level-card__example-label">Пример:</span>
+            Отметка в Jira + презентация на дейли
+          </div>
+        </div>
+        <div class="level-card level-card--medium">
+          <div class="level-card__badge">MEDIUM</div>
+          <div class="level-card__points">+25 pts</div>
+          <h3 class="level-card__title">Оптимизация продукта</h3>
+          <p class="level-card__desc">Разработал план оптимизации продукта с конкретными метриками улучшения.</p>
+          <div class="level-card__example">
+            <span class="level-card__example-label">Пример:</span>
+            Отчёт о проделанной работе на встрече по статусам
+          </div>
+        </div>
+        <div class="level-card level-card--hard">
+          <div class="level-card__badge">HARD</div>
+          <div class="level-card__points">+50 pts</div>
+          <h3 class="level-card__title">Бизнес-импакт фича</h3>
+          <p class="level-card__desc">Предложил и реализовал функцию, которая влияет на бизнес-метрики продукта.</p>
+          <div class="level-card__example">
+            <span class="level-card__example-label">Пример:</span>
+            Презентация на встрече с заказчиком
+          </div>
+        </div>
+      </div>
+      <div class="conditions">
+        <h3 class="conditions__title">Обязательные условия</h3>
+        <div class="conditions-list">
+          <div class="condition-item"><span class="condition-icon">✓</span>Челленджи рассчитаны на месяц с возможностью повторения</div>
+          <div class="condition-item"><span class="condition-icon">✓</span>Участие в ежедневных дейли-встречах</div>
+          <div class="condition-item"><span class="condition-icon">✓</span>Ведение задач в Jira</div>
+          <div class="condition-item"><span class="condition-icon">✓</span>Регулярные встречи с заказчиком</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REWARDS -->
+  <section class="section section--dark" id="rewards">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Награды</div>
+        <h2 class="section-title">Что можно получить</h2>
+      </div>
+      <div class="rewards-grid">
+        <div class="reward-card">
+          <div class="reward-card__icon">🎨</div>
+          <div class="reward-card__combo">LIGHT</div>
+          <h3 class="reward-card__title">Стикерпак</h3>
+          <p class="reward-card__desc">Уникальный стикерпак проекта «Фабрика Решений»</p>
+          <div class="reward-card__pts">от 10 pts</div>
+        </div>
+        <div class="reward-card reward-card--featured">
+          <div class="reward-card__icon">🔑</div>
+          <div class="reward-card__combo">LIGHT + MEDIUM</div>
+          <h3 class="reward-card__title">Брелок</h3>
+          <p class="reward-card__desc">Фирменный брелок проекта «Фабрика Решений»</p>
+          <div class="reward-card__pts">от 35 pts</div>
+        </div>
+        <div class="reward-card">
+          <div class="reward-card__icon">🤝</div>
+          <div class="reward-card__combo">LIGHT + MEDIUM + HARD</div>
+          <h3 class="reward-card__title">Встреча с экспертом</h3>
+          <p class="reward-card__desc">Персональная встреча и менторинг от ведущего эксперта</p>
+          <div class="reward-card__pts">от 85 pts</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="logo">
+        <span class="logo__fr">ФР</span>
+        <span class="logo__text">Фабрика Решений</span>
+      </div>
+      <p class="footer__copy">© 2026 Фабрика Решений. Платформа геймификации.</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Войти — Фабрика Решений</title>
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;900&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/main.css" />
+</head>
+<body>
+  <div class="auth-page">
+    <div class="auth-card">
+      <div class="auth-card__logo">
+        <a href="/" class="logo">
+          <div class="logo__fr">ФР</div>
+          <span class="logo__text">Фабрика Решений</span>
+        </a>
+      </div>
+      <h1 class="auth-card__title">Добро пожаловать</h1>
+      <p class="auth-card__subtitle">Войди в платформу геймификации</p>
+
+      <form id="loginForm" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="username">Логин</label>
+          <input class="form-input" type="text" id="username" name="username"
+                 placeholder="your_login" autocomplete="username" />
+          <span class="form-error" id="usernameError">Введите логин</span>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="password">Пароль</label>
+          <input class="form-input" type="password" id="password" name="password"
+                 placeholder="••••••••" autocomplete="current-password" />
+          <span class="form-error" id="passwordError">Введите пароль</span>
+        </div>
+        <span class="form-error" id="globalError" style="display:block;margin-bottom:12px;"></span>
+        <button type="submit" class="btn btn--primary btn--full" id="submitBtn">
+          Войти
+        </button>
+      </form>
+
+      <div style="margin-top: 24px; text-align: center;">
+        <a href="/" style="font-size: 13px; color: var(--text-muted);">← На главную</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/main.js"></script>
+  <script>
+    // Redirect if already logged in
+    if (Auth.isAuth()) {
+      const user = Auth.getUser();
+      window.location.href = user?.role === 'admin' ? 'admin.html' : 'pm.html';
+    }
+
+    const form = document.getElementById('loginForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const globalError = document.getElementById('globalError');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+
+      // Validation
+      let valid = true;
+      if (!username) {
+        document.getElementById('usernameError').classList.add('visible');
+        valid = false;
+      } else {
+        document.getElementById('usernameError').classList.remove('visible');
+      }
+      if (!password) {
+        document.getElementById('passwordError').classList.add('visible');
+        valid = false;
+      } else {
+        document.getElementById('passwordError').classList.remove('visible');
+      }
+      if (!valid) return;
+
+      submitBtn.textContent = 'Входим...';
+      submitBtn.disabled = true;
+      globalError.style.display = 'none';
+
+      try {
+        // OAuth2 form data
+        const formData = new URLSearchParams();
+        formData.append('username', username);
+        formData.append('password', password);
+
+        const res = await fetch('/api/auth/token', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: formData
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.detail || 'Неверный логин или пароль');
+
+        Auth.setToken(data.access_token);
+        Auth.setUser(data.user);
+
+        window.location.href = data.user.role === 'admin' ? 'admin.html' : 'pm.html';
+      } catch (err) {
+        globalError.textContent = err.message;
+        globalError.style.display = 'block';
+        globalError.classList.add('visible');
+        submitBtn.textContent = 'Войти';
+        submitBtn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ПМ-кабинет — Фабрика Решений</title>
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;900&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/main.css" />
+</head>
+<body>
+
+<div class="dashboard">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar__header">
+      <a href="/" class="logo">
+        <div class="logo__fr">ФР</div>
+        <span class="logo__text">Фабрика Решений</span>
+      </a>
+    </div>
+    <nav class="sidebar__nav">
+      <a class="sidebar__link active" data-tab="overview" href="#">
+        <span class="sidebar__link-icon">📊</span> Обзор
+      </a>
+      <a class="sidebar__link" data-tab="team" href="#">
+        <span class="sidebar__link-icon">👥</span> Команда
+      </a>
+      <a class="sidebar__link" data-tab="challenges" href="#">
+        <span class="sidebar__link-icon">🎯</span> Челленджи
+      </a>
+      <a class="sidebar__link" data-tab="daily" href="#">
+        <span class="sidebar__link-icon">📅</span> Дейли-задачи
+      </a>
+      <a class="sidebar__link" data-tab="rating" href="#">
+        <span class="sidebar__link-icon">🏆</span> Рейтинг
+      </a>
+    </nav>
+    <div class="sidebar__footer">
+      <div class="sidebar__user" id="sidebarUser">
+        <div class="sidebar__user-avatar" id="userAvatar">ПМ</div>
+        <div>
+          <div class="sidebar__user-name" id="userName">Загрузка...</div>
+          <div class="sidebar__user-role">Проектный менеджер</div>
+        </div>
+      </div>
+      <button class="btn btn--secondary btn--full" style="margin-top:8px; font-size:12px;" onclick="Auth.logout()">
+        Выйти
+      </button>
+    </div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- MAIN -->
+  <main class="dashboard__main">
+    <div class="dashboard__topbar">
+      <button class="dashboard-hamburger" id="dashHamburger">
+        <span></span><span></span><span></span>
+      </button>
+      <h1 class="dashboard__title" id="pageTitle">Обзор</h1>
+      <div style="display:flex;gap:8px;" id="topbarActions"></div>
+    </div>
+
+    <!-- OVERVIEW TAB -->
+    <div id="tab-overview" class="tab-content active">
+      <div class="stat-cards" id="statCards">
+        <div class="stat-card">
+          <div class="stat-card__label">Участников</div>
+          <div class="stat-card__value" id="statMembers">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__label">Челленджей</div>
+          <div class="stat-card__value" id="statChallenges">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__label">Дейли сегодня</div>
+          <div class="stat-card__value" id="statDaily">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__label">Баллов выдано</div>
+          <div class="stat-card__value" id="statPoints">—</div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="panel">
+          <div class="panel__header">
+            <span class="panel__title">Топ-3 команды</span>
+          </div>
+          <div id="topRatingList">
+            <div class="empty-state">
+              <div class="empty-state__icon">📊</div>
+              <div class="empty-state__title">Нет данных</div>
+              <div class="empty-state__text">Добавьте участников и их результаты</div>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel__header">
+            <span class="panel__title">Активные челленджи</span>
+          </div>
+          <div id="activeChallengesList">
+            <div class="empty-state">
+              <div class="empty-state__icon">🎯</div>
+              <div class="empty-state__title">Нет челленджей</div>
+              <div class="empty-state__text">Создайте первый челлендж для команды</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TEAM TAB -->
+    <div id="tab-team" class="tab-content">
+      <div class="panel">
+        <div class="panel__header">
+          <span class="panel__title">Участники команды</span>
+          <button class="btn btn--primary" onclick="openModal('addMemberModal')">+ Добавить</button>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Участник</th>
+                <th>Роль</th>
+                <th>Баллы</th>
+                <th>Дейли</th>
+                <th>Действия</th>
+              </tr>
+            </thead>
+            <tbody id="teamTableBody">
+              <tr><td colspan="5"><div class="empty-state">
+                <div class="empty-state__icon">👥</div>
+                <div class="empty-state__title">Команда пуста</div>
+                <div class="empty-state__text">Добавьте первого участника</div>
+              </div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHALLENGES TAB -->
+    <div id="tab-challenges" class="tab-content">
+      <div class="panel">
+        <div class="panel__header">
+          <span class="panel__title">Челленджи</span>
+          <button class="btn btn--primary" onclick="openModal('addChallengeModal')">+ Создать</button>
+        </div>
+        <div class="tabs">
+          <button class="tab-btn active" onclick="filterChallenges('all', this)">Все</button>
+          <button class="tab-btn" onclick="filterChallenges('LIGHT', this)">LIGHT</button>
+          <button class="tab-btn" onclick="filterChallenges('MEDIUM', this)">MEDIUM</button>
+          <button class="tab-btn" onclick="filterChallenges('HARD', this)">HARD</button>
+        </div>
+        <div id="challengesList">
+          <div class="empty-state">
+            <div class="empty-state__icon">🎯</div>
+            <div class="empty-state__title">Нет челленджей</div>
+            <div class="empty-state__text">Создайте первый челлендж</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAILY TAB -->
+    <div id="tab-daily" class="tab-content">
+      <div class="panel">
+        <div class="panel__header">
+          <span class="panel__title">Ежедневные задачи</span>
+          <button class="btn btn--primary" onclick="openModal('addDailyModal')">+ Добавить</button>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Задача</th>
+                <th>Баллы</th>
+                <th>Дата</th>
+                <th>Действия</th>
+              </tr>
+            </thead>
+            <tbody id="dailyTableBody">
+              <tr><td colspan="5"><div class="empty-state">
+                <div class="empty-state__icon">📅</div>
+                <div class="empty-state__title">Нет задач</div>
+                <div class="empty-state__text">Добавьте ежедневную задачу</div>
+              </div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- RATING TAB -->
+    <div id="tab-rating" class="tab-content">
+      <div class="panel">
+        <div class="panel__header">
+          <span class="panel__title">Рейтинг участников</span>
+        </div>
+        <div id="fullRatingList"></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- MODAL: Add Member -->
+<div class="modal-overlay" id="addMemberModal">
+  <div class="modal">
+    <div class="modal__header">
+      <span class="modal__title">Добавить участника</span>
+      <button class="modal__close" onclick="closeModal('addMemberModal')">✕</button>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Имя</label>
+      <input class="form-input" type="text" id="memberFirstName" placeholder="Иван" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Фамилия</label>
+      <input class="form-input" type="text" id="memberLastName" placeholder="Иванов" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Роль в проекте</label>
+      <input class="form-input" type="text" id="memberRole" placeholder="Frontend Developer" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Email</label>
+      <input class="form-input" type="email" id="memberEmail" placeholder="ivan@example.com" />
+    </div>
+    <div class="modal__actions">
+      <button class="btn btn--secondary" onclick="closeModal('addMemberModal')">Отмена</button>
+      <button class="btn btn--primary" onclick="addMember()">Добавить</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Add Challenge -->
+<div class="modal-overlay" id="addChallengeModal">
+  <div class="modal">
+    <div class="modal__header">
+      <span class="modal__title">Создать челлендж</span>
+      <button class="modal__close" onclick="closeModal('addChallengeModal')">✕</button>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Название</label>
+      <input class="form-input" type="text" id="challengeTitle" placeholder="Помоги участнику закрыть задачу" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Описание</label>
+      <textarea class="form-input" id="challengeDesc" rows="3" placeholder="Подробное описание..."></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Уровень</label>
+      <select class="form-input form-select" id="challengeLevel">
+        <option value="LIGHT">LIGHT (+10 баллов)</option>
+        <option value="MEDIUM">MEDIUM (+25 баллов)</option>
+        <option value="HARD">HARD (+50 баллов)</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Пример выполнения</label>
+      <input class="form-input" type="text" id="challengeExample" placeholder="Отметка в Jira + презентация на дейли" />
+    </div>
+    <div class="modal__actions">
+      <button class="btn btn--secondary" onclick="closeModal('addChallengeModal')">Отмена</button>
+      <button class="btn btn--primary" onclick="addChallenge()">Создать</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Add Daily Task -->
+<div class="modal-overlay" id="addDailyModal">
+  <div class="modal">
+    <div class="modal__header">
+      <span class="modal__title">Добавить дейли-задачу</span>
+      <button class="modal__close" onclick="closeModal('addDailyModal')">✕</button>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Описание задачи</label>
+      <textarea class="form-input" id="dailyDesc" rows="3" placeholder="Что нужно сделать сегодня..."></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Баллы за выполнение</label>
+      <input class="form-input" type="number" id="dailyPoints" value="5" min="1" max="100" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Дата</label>
+      <input class="form-input" type="date" id="dailyDate" />
+    </div>
+    <div class="modal__actions">
+      <button class="btn btn--secondary" onclick="closeModal('addDailyModal')">Отмена</button>
+      <button class="btn btn--primary" onclick="addDailyTask()">Добавить</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Award points -->
+<div class="modal-overlay" id="awardPointsModal">
+  <div class="modal">
+    <div class="modal__header">
+      <span class="modal__title">Начислить баллы</span>
+      <button class="modal__close" onclick="closeModal('awardPointsModal')">✕</button>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Участник</label>
+      <select class="form-input form-select" id="awardMember"></select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Челлендж / задача</label>
+      <select class="form-input form-select" id="awardChallenge"></select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Комментарий</label>
+      <input class="form-input" type="text" id="awardComment" placeholder="За отличную работу!" />
+    </div>
+    <div class="modal__actions">
+      <button class="btn btn--secondary" onclick="closeModal('awardPointsModal')">Отмена</button>
+      <button class="btn btn--primary" onclick="awardPoints()">Начислить</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="../js/main.js"></script>
+<script src="../js/pm.js"></script>
+</body>
+</html>
