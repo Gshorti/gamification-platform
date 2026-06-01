@@ -157,7 +157,7 @@ img { max-width: 100%; display: block; }
 .nav__link {
   padding: 6px 14px;
   border-radius: var(--radius-sm);
-  font-size: 16px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--text-secondary);
   transition: var(--transition);

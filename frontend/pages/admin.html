@@ -6,9 +6,12 @@
   <title>Админ — Фабрика Решений</title>
   <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;900&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../css/main.css" />
+  <link rel="stylesheet" href="../css/admin.css" />
 </head>
 <body>
 <div class="dashboard">
+
+  <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar__header">
       <a href="/" class="logo">
@@ -17,95 +20,110 @@
       </a>
     </div>
     <nav class="sidebar__nav">
-      <a class="sidebar__link active" data-tab="overview" href="#">
-        <span class="sidebar__link-icon">📊</span> Обзор
-      </a>
-      <a class="sidebar__link" data-tab="pms" href="#">
-        <span class="sidebar__link-icon">👤</span> ПМ-менеджеры
-      </a>
-      <a class="sidebar__link" data-tab="teams" href="#">
-        <span class="sidebar__link-icon">👥</span> Все команды
-      </a>
-      <a class="sidebar__link" data-tab="challenges" href="#">
-        <span class="sidebar__link-icon">🎯</span> Все челленджи
-      </a>
-      <a class="sidebar__link" data-tab="prizes" href="#">
-        <span class="sidebar__link-icon">🎁</span> Призы
-      </a>
-      <a class="sidebar__link" data-tab="rating" href="#">
-        <span class="sidebar__link-icon">🏆</span> Рейтинг
-      </a>
+      <a class="sidebar__link active" data-tab="overview"  href="#"><span class="sidebar__link-icon">📊</span>Обзор</a>
+      <a class="sidebar__link"        data-tab="analytics" href="#"><span class="sidebar__link-icon">📈</span>Аналитика</a>
+      <a class="sidebar__link"        data-tab="pms"       href="#"><span class="sidebar__link-icon">👤</span>ПМ-менеджеры</a>
+      <a class="sidebar__link"        data-tab="teams"     href="#"><span class="sidebar__link-icon">👥</span>Команды</a>
+      <a class="sidebar__link"        data-tab="members"   href="#"><span class="sidebar__link-icon">🙋</span>Участники</a>
+      <a class="sidebar__link"        data-tab="challenges"href="#"><span class="sidebar__link-icon">🎯</span>Челленджи</a>
+      <a class="sidebar__link"        data-tab="prizes"    href="#"><span class="sidebar__link-icon">🎁</span>Призы</a>
+      <a class="sidebar__link"        data-tab="logs"      href="#"><span class="sidebar__link-icon">📋</span>Лог баллов</a>
     </nav>
     <div class="sidebar__footer">
       <div class="sidebar__user">
-        <div class="sidebar__user-avatar" style="background:linear-gradient(135deg,#e53e3e,#c53030)">A</div>
+        <div class="sidebar__user-avatar" style="background:linear-gradient(135deg,var(--purple),var(--cyan))">A</div>
         <div>
           <div class="sidebar__user-name">Администратор</div>
           <div class="sidebar__user-role">Полный доступ</div>
         </div>
       </div>
-      <button class="btn btn--secondary btn--full" style="margin-top:8px;font-size:12px" onclick="Auth.logout()">Выйти</button>
+      <button class="btn btn--secondary btn--full" style="margin-top:8px;font-size:11px" onclick="Auth.logout()">Выйти</button>
     </div>
   </aside>
   <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
+  <!-- MAIN -->
   <main class="dashboard__main">
     <div class="dashboard__topbar">
-      <button class="dashboard-hamburger" id="dashHamburger">
-        <span></span><span></span><span></span>
-      </button>
+      <button class="dashboard-hamburger" id="dashHamburger"><span></span><span></span><span></span></button>
       <h1 class="dashboard__title" id="pageTitle">Обзор</h1>
+      <button class="btn btn--ghost" style="font-size:11px;padding:8px 14px" onclick="loadAll()" title="Обновить данные">↻ Обновить</button>
     </div>
 
-    <!-- OVERVIEW -->
+    <!-- ══════════ OVERVIEW ══════════ -->
     <div id="tab-overview" class="tab-content active">
-      <div class="stat-cards">
-        <div class="stat-card">
-          <div class="stat-card__label">ПМ-менеджеров</div>
-          <div class="stat-card__value" id="sPMs">—</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-card__label">Команд</div>
-          <div class="stat-card__value" id="sTeams">—</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-card__label">Участников</div>
-          <div class="stat-card__value" id="sMembers">—</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-card__label">Баллов выдано</div>
-          <div class="stat-card__value" id="sPoints">—</div>
-        </div>
+      <div class="stat-cards" id="overviewCards">
+        <div class="stat-card"><div class="stat-card__label">ПМ-менеджеров</div><div class="stat-card__value" id="sPMs">—</div></div>
+        <div class="stat-card"><div class="stat-card__label">Команд</div><div class="stat-card__value" id="sTeams">—</div></div>
+        <div class="stat-card"><div class="stat-card__label">Участников</div><div class="stat-card__value" id="sMembers">—</div></div>
+        <div class="stat-card"><div class="stat-card__label">Баллов выдано</div><div class="stat-card__value" id="sPoints">—</div></div>
+        <div class="stat-card"><div class="stat-card__label">Челленджей</div><div class="stat-card__value" id="sChallenges">—</div></div>
       </div>
       <div class="grid-2">
         <div class="panel">
-          <div class="panel__header"><span class="panel__title">Топ участников</span></div>
-          <div id="globalTopRating"></div>
+          <div class="panel__header"><span class="panel__title">🏆 Топ-5 участников</span></div>
+          <div id="overviewTopMembers"></div>
         </div>
         <div class="panel">
-          <div class="panel__header"><span class="panel__title">Команды</span></div>
-          <div id="teamsPreview"></div>
+          <div class="panel__header">
+            <span class="panel__title">👥 Команды</span>
+            <button class="btn btn--primary" style="font-size:11px;padding:7px 14px" onclick="switchTab('pms');openModal('createPMModal')">+ ПМ</button>
+          </div>
+          <div id="overviewTeams"></div>
         </div>
+      </div>
+      <div class="panel">
+        <div class="panel__header"><span class="panel__title">📋 Последние операции с баллами</span><a class="link-sm" onclick="switchTab('logs')" href="#">Все →</a></div>
+        <div id="overviewRecentLogs"></div>
       </div>
     </div>
 
-    <!-- PMs -->
+    <!-- ══════════ ANALYTICS ══════════ -->
+    <div id="tab-analytics" class="tab-content">
+      <div class="stat-cards" id="analyticsCards">
+        <div class="stat-card"><div class="stat-card__label">LIGHT челленджей</div><div class="stat-card__value" id="aLight">—</div></div>
+        <div class="stat-card"><div class="stat-card__label">MEDIUM челленджей</div><div class="stat-card__value" id="aMedium">—</div></div>
+        <div class="stat-card"><div class="stat-card__label">HARD челленджей</div><div class="stat-card__value" id="aHard">—</div></div>
+        <div class="stat-card"><div class="stat-card__label">Средний балл</div><div class="stat-card__value" id="aAvg">—</div></div>
+      </div>
+      <div class="grid-2">
+        <div class="panel">
+          <div class="panel__header"><span class="panel__title">📊 Баллы по дням (14 дней)</span></div>
+          <div class="chart-wrap" id="pointsChart"></div>
+        </div>
+        <div class="panel">
+          <div class="panel__header"><span class="panel__title">🥧 Распределение по уровням</span></div>
+          <div class="chart-wrap" id="levelsPie"></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel__header"><span class="panel__title">📋 Рейтинг команд по баллам</span></div>
+        <div id="teamsRanking"></div>
+      </div>
+    </div>
+
+    <!-- ══════════ PMs ══════════ -->
     <div id="tab-pms" class="tab-content">
       <div class="panel">
         <div class="panel__header">
           <span class="panel__title">Проектные менеджеры</span>
           <button class="btn btn--primary" onclick="openModal('createPMModal')">+ Создать ПМ</button>
         </div>
+        <div class="search-bar">
+          <input class="form-input search-input" type="text" id="pmSearch" placeholder="🔍  Поиск по имени или логину…" oninput="renderPMs()"/>
+        </div>
         <div class="table-wrap">
           <table class="data-table">
-            <thead><tr><th>Пользователь</th><th>Команда</th><th>Участников</th><th>Дата создания</th><th>Действия</th></tr></thead>
-            <tbody id="pmTableBody"><tr><td colspan="5"><div class="empty-state"><div class="empty-state__icon">👤</div><div class="empty-state__title">Загрузка...</div></div></td></tr></tbody>
+            <thead><tr>
+              <th>Пользователь</th><th>Статус</th><th>Команда</th><th>Участников</th><th>Челленджей</th><th>Создан</th><th>Действия</th>
+            </tr></thead>
+            <tbody id="pmTableBody"></tbody>
           </table>
         </div>
       </div>
     </div>
 
-    <!-- TEAMS -->
+    <!-- ══════════ TEAMS ══════════ -->
     <div id="tab-teams" class="tab-content">
       <div class="panel">
         <div class="panel__header"><span class="panel__title">Все команды</span></div>
@@ -113,67 +131,95 @@
       </div>
     </div>
 
-    <!-- CHALLENGES -->
-    <div id="tab-challenges" class="tab-content">
+    <!-- ══════════ MEMBERS ══════════ -->
+    <div id="tab-members" class="tab-content">
       <div class="panel">
-        <div class="panel__header"><span class="panel__title">Все челленджи</span></div>
+        <div class="panel__header">
+          <span class="panel__title">Все участники</span>
+          <span class="panel__count" id="membersCount"></span>
+        </div>
+        <div class="search-bar" style="display:flex;gap:10px;flex-wrap:wrap">
+          <input class="form-input search-input" style="flex:1;min-width:180px" type="text" id="memberSearch" placeholder="🔍  Поиск по имени, email…" oninput="renderMembers()"/>
+          <select class="form-input form-select" id="memberTeamFilter" style="width:180px" onchange="renderMembers()">
+            <option value="">Все команды</option>
+          </select>
+        </div>
         <div class="table-wrap">
           <table class="data-table">
-            <thead><tr><th>Название</th><th>Уровень</th><th>Баллы</th><th>ПМ</th><th>Действия</th></tr></thead>
+            <thead><tr>
+              <th>Участник</th><th>Команда</th><th>Роль</th><th>Баллы</th><th>Стрик</th><th>Действия</th>
+            </tr></thead>
+            <tbody id="memberTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════ CHALLENGES ══════════ -->
+    <div id="tab-challenges" class="tab-content">
+      <div class="panel">
+        <div class="panel__header">
+          <span class="panel__title">Все челленджи</span>
+        </div>
+        <div class="tabs">
+          <button class="tab-btn active" onclick="filterChallenges('',this)">Все</button>
+          <button class="tab-btn" onclick="filterChallenges('LIGHT',this)">LIGHT</button>
+          <button class="tab-btn" onclick="filterChallenges('MEDIUM',this)">MEDIUM</button>
+          <button class="tab-btn" onclick="filterChallenges('HARD',this)">HARD</button>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Название</th><th>Уровень</th><th>Баллы</th><th>Команда</th><th>ПМ</th><th>Создан</th><th>Действия</th></tr></thead>
             <tbody id="allChallengesBody"></tbody>
           </table>
         </div>
       </div>
     </div>
 
-    <!-- PRIZES -->
+    <!-- ══════════ PRIZES ══════════ -->
     <div id="tab-prizes" class="tab-content">
       <div class="panel">
         <div class="panel__header">
           <span class="panel__title">Каталог призов</span>
-          <button class="btn btn--primary" onclick="openModal('addPrizeModal')">+ Добавить приз</button>
+          <button class="btn btn--primary" onclick="openModal('addPrizeModal')">+ Добавить</button>
         </div>
         <div id="prizesList"></div>
       </div>
     </div>
 
-    <!-- RATING -->
-    <div id="tab-rating" class="tab-content">
+    <!-- ══════════ LOGS ══════════ -->
+    <div id="tab-logs" class="tab-content">
       <div class="panel">
-        <div class="panel__header"><span class="panel__title">Глобальный рейтинг</span></div>
-        <div id="globalRatingFull"></div>
+        <div class="panel__header">
+          <span class="panel__title">Лог начисления баллов</span>
+          <span class="panel__count" id="logsCount"></span>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Дата</th><th>Участник</th><th>Баллы</th><th>Тип</th><th>Комментарий</th><th>Кем</th></tr></thead>
+            <tbody id="logsBody"></tbody>
+          </table>
+        </div>
       </div>
     </div>
+
   </main>
 </div>
 
-<!-- Modal: Create PM -->
+<!-- ══ MODAL: Create PM ══ -->
 <div class="modal-overlay" id="createPMModal">
   <div class="modal">
     <div class="modal__header">
       <span class="modal__title">Создать ПМ-аккаунт</span>
       <button class="modal__close" onclick="closeModal('createPMModal')">✕</button>
     </div>
-    <div class="form-group">
-      <label class="form-label">Полное имя</label>
-      <input class="form-input" type="text" id="pmFullName" placeholder="Иван Иванов" />
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Имя</label><input class="form-input" type="text" id="pmFullName" placeholder="Иван Иванов"/></div>
+      <div class="form-group"><label class="form-label">Логин *</label><input class="form-input" type="text" id="pmUsername" placeholder="ivan_pm"/></div>
     </div>
-    <div class="form-group">
-      <label class="form-label">Логин</label>
-      <input class="form-input" type="text" id="pmUsername" placeholder="ivan_pm" />
-    </div>
-    <div class="form-group">
-      <label class="form-label">Email</label>
-      <input class="form-input" type="email" id="pmEmail" placeholder="ivan@example.com" />
-    </div>
-    <div class="form-group">
-      <label class="form-label">Пароль</label>
-      <input class="form-input" type="password" id="pmPassword" placeholder="Минимум 8 символов" />
-    </div>
-    <div class="form-group">
-      <label class="form-label">Название команды</label>
-      <input class="form-input" type="text" id="pmTeamName" placeholder="Команда А" />
-    </div>
+    <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" id="pmEmail" placeholder="ivan@company.com"/></div>
+    <div class="form-group"><label class="form-label">Пароль *</label><input class="form-input" type="password" id="pmPassword" placeholder="Минимум 6 символов"/></div>
+    <div class="form-group"><label class="form-label">Название команды</label><input class="form-input" type="text" id="pmTeamName" placeholder="Команда А"/></div>
     <div class="modal__actions">
       <button class="btn btn--secondary" onclick="closeModal('createPMModal')">Отмена</button>
       <button class="btn btn--primary" onclick="createPM()">Создать</button>
@@ -181,37 +227,162 @@
   </div>
 </div>
 
-<!-- Modal: Add Prize -->
+<!-- ══ MODAL: Edit PM ══ -->
+<div class="modal-overlay" id="editPMModal">
+  <div class="modal">
+    <div class="modal__header">
+      <span class="modal__title">Редактировать ПМ</span>
+      <button class="modal__close" onclick="closeModal('editPMModal')">✕</button>
+    </div>
+    <input type="hidden" id="editPMId"/>
+    <div class="form-group"><label class="form-label">Полное имя</label><input class="form-input" type="text" id="editPMFullName"/></div>
+    <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" id="editPMEmail"/></div>
+    <div class="form-group"><label class="form-label">Название команды</label><input class="form-input" type="text" id="editPMTeamName"/></div>
+    <div class="form-group">
+      <label class="form-label">Статус аккаунта</label>
+      <select class="form-input form-select" id="editPMActive">
+        <option value="true">Активен</option>
+        <option value="false">Заблокирован</option>
+      </select>
+    </div>
+    <div class="modal__actions">
+      <button class="btn btn--secondary" onclick="closeModal('editPMModal')">Отмена</button>
+      <button class="btn btn--primary" onclick="savePM()">Сохранить</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: Reset Password ══ -->
+<div class="modal-overlay" id="resetPassModal">
+  <div class="modal" style="max-width:360px">
+    <div class="modal__header">
+      <span class="modal__title">Сбросить пароль</span>
+      <button class="modal__close" onclick="closeModal('resetPassModal')">✕</button>
+    </div>
+    <p style="font-size:13px;color:var(--text-secondary);margin-bottom:16px" id="resetPassHint"></p>
+    <input type="hidden" id="resetPassPMId"/>
+    <div class="form-group">
+      <label class="form-label">Новый пароль</label>
+      <input class="form-input" type="password" id="resetPassValue" placeholder="Минимум 6 символов"/>
+    </div>
+    <div class="modal__actions">
+      <button class="btn btn--secondary" onclick="closeModal('resetPassModal')">Отмена</button>
+      <button class="btn btn--primary" onclick="doResetPass()">Сохранить</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: Edit Member ══ -->
+<div class="modal-overlay" id="editMemberModal">
+  <div class="modal">
+    <div class="modal__header">
+      <span class="modal__title">Редактировать участника</span>
+      <button class="modal__close" onclick="closeModal('editMemberModal')">✕</button>
+    </div>
+    <input type="hidden" id="editMemberId"/>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Имя</label><input class="form-input" type="text" id="editMemberFirst"/></div>
+      <div class="form-group"><label class="form-label">Фамилия</label><input class="form-input" type="text" id="editMemberLast"/></div>
+    </div>
+    <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" id="editMemberEmail"/></div>
+    <div class="form-group"><label class="form-label">Роль в проекте</label><input class="form-input" type="text" id="editMemberRole"/></div>
+    <div class="modal__actions">
+      <button class="btn btn--secondary" onclick="closeModal('editMemberModal')">Отмена</button>
+      <button class="btn btn--primary" onclick="saveMember()">Сохранить</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: Award / Deduct Points ══ -->
+<div class="modal-overlay" id="pointsModal">
+  <div class="modal" style="max-width:380px">
+    <div class="modal__header">
+      <span class="modal__title" id="pointsModalTitle">Начислить баллы</span>
+      <button class="modal__close" onclick="closeModal('pointsModal')">✕</button>
+    </div>
+    <p style="font-size:13px;color:var(--text-secondary);margin-bottom:16px" id="pointsModalHint"></p>
+    <input type="hidden" id="pointsMemberId"/>
+    <div class="form-group">
+      <label class="form-label">Количество баллов</label>
+      <input class="form-input" type="number" id="pointsAmount" min="1" value="10"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Комментарий</label>
+      <input class="form-input" type="text" id="pointsComment" placeholder="Причина начисления…"/>
+    </div>
+    <div class="modal__actions">
+      <button class="btn btn--secondary" onclick="closeModal('pointsModal')">Отмена</button>
+      <button class="btn btn--primary" id="pointsSubmitBtn" onclick="submitPoints()">Начислить</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: Points History ══ -->
+<div class="modal-overlay" id="historyModal">
+  <div class="modal" style="max-width:560px">
+    <div class="modal__header">
+      <span class="modal__title" id="historyModalTitle">История баллов</span>
+      <button class="modal__close" onclick="closeModal('historyModal')">✕</button>
+    </div>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead><tr><th>Дата</th><th>Баллы</th><th>Тип</th><th>Комментарий</th><th>Кем</th></tr></thead>
+        <tbody id="historyBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: Edit Team ══ -->
+<div class="modal-overlay" id="editTeamModal">
+  <div class="modal" style="max-width:360px">
+    <div class="modal__header">
+      <span class="modal__title">Переименовать команду</span>
+      <button class="modal__close" onclick="closeModal('editTeamModal')">✕</button>
+    </div>
+    <input type="hidden" id="editTeamId"/>
+    <div class="form-group"><label class="form-label">Название команды</label><input class="form-input" type="text" id="editTeamName"/></div>
+    <div class="modal__actions">
+      <button class="btn btn--secondary" onclick="closeModal('editTeamModal')">Отмена</button>
+      <button class="btn btn--primary" onclick="saveTeam()">Сохранить</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: Add Prize ══ -->
 <div class="modal-overlay" id="addPrizeModal">
   <div class="modal">
     <div class="modal__header">
       <span class="modal__title">Добавить приз</span>
       <button class="modal__close" onclick="closeModal('addPrizeModal')">✕</button>
     </div>
-    <div class="form-group">
-      <label class="form-label">Название</label>
-      <input class="form-input" type="text" id="prizeName" placeholder="Стикерпак" />
-    </div>
-    <div class="form-group">
-      <label class="form-label">Описание</label>
-      <input class="form-input" type="text" id="prizeDesc" placeholder="Описание приза" />
-    </div>
-    <div class="form-group">
-      <label class="form-label">Стоимость (баллы)</label>
-      <input class="form-input" type="number" id="prizeCost" value="10" min="1" />
-    </div>
-    <div class="form-group">
-      <label class="form-label">Уровень (LIGHT / MEDIUM / HARD)</label>
-      <select class="form-input form-select" id="prizeLevel">
-        <option value="LIGHT">LIGHT</option>
-        <option value="MEDIUM">MEDIUM</option>
-        <option value="HARD">HARD</option>
-      </select>
+    <div class="form-group"><label class="form-label">Название</label><input class="form-input" type="text" id="prizeName" placeholder="Стикерпак"/></div>
+    <div class="form-group"><label class="form-label">Описание</label><textarea class="form-input" id="prizeDesc" rows="2" placeholder="Описание приза"></textarea></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Стоимость (баллы)</label><input class="form-input" type="number" id="prizeCost" value="10" min="1"/></div>
+      <div class="form-group"><label class="form-label">Уровень</label>
+        <select class="form-input form-select" id="prizeLevel">
+          <option value="LIGHT">LIGHT</option>
+          <option value="MEDIUM">MEDIUM</option>
+          <option value="HARD">HARD</option>
+        </select>
+      </div>
     </div>
     <div class="modal__actions">
       <button class="btn btn--secondary" onclick="closeModal('addPrizeModal')">Отмена</button>
       <button class="btn btn--primary" onclick="addPrize()">Добавить</button>
     </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: Team Detail ══ -->
+<div class="modal-overlay" id="teamDetailModal">
+  <div class="modal" style="max-width:620px">
+    <div class="modal__header">
+      <span class="modal__title" id="teamDetailTitle">Команда</span>
+      <button class="modal__close" onclick="closeModal('teamDetailModal')">✕</button>
+    </div>
+    <div id="teamDetailBody"></div>
   </div>
 </div>
 
