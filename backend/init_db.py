@@ -10,7 +10,7 @@ sys.path.insert(0, os.path.dirname(__file__))
 from app.core.database import SessionLocal, engine, Base
 from app.core.security import hash_password
 from app.models.models import User, UserRole, Prize, ChallengeLevel
-
+import hashlib
 Base.metadata.create_all(bind=engine)
 
 db = SessionLocal()
@@ -21,7 +21,7 @@ if not admin:
     admin = User(
         username="admin",
         full_name="Администратор",
-        hashed_password="123",
+        hashed_password=hashlib.sha256("123".encode("utf-8")).hexdigest(),
         role=UserRole.admin,
     )
     db.add(admin)

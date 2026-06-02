@@ -33,7 +33,7 @@ def create_challenge(data: ChallengeCreate, user: User = Depends(require_pm), db
     return ch
 
 
-@router.delete("/{challenge_id}", status_code=204)
+@router.delete("/{challenge_id}")
 def delete_challenge(challenge_id: int, user: User = Depends(require_pm), db: Session = Depends(get_db)):
     team = _get_pm_team(user, db)
     ch = db.query(Challenge).filter(Challenge.id == challenge_id, Challenge.team_id == team.id).first()
@@ -41,3 +41,4 @@ def delete_challenge(challenge_id: int, user: User = Depends(require_pm), db: Se
         raise HTTPException(status_code=404, detail="Челлендж не найден")
     db.delete(ch)
     db.commit()
+    return {"status": "OK"}
