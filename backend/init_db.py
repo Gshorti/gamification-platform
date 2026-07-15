@@ -42,3 +42,4 @@ if not db.query(Prize).first():
 db.commit()
 db.close()
 print("Done!")
+#БУБУБУ Я НЕ БУБЛИК
